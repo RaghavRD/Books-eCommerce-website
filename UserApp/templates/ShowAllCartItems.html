@@ -1,0 +1,277 @@
+{%extends "index.html"%}
+
+{%block content%}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+        text-shadow: rgba(0, 0, 0, .01) 0 0 1px
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: ">"
+    }
+
+    .breadcrumb {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: .1rem 0rem !important;
+        margin-bottom: 0rem;
+        list-style: none;
+        /* background-color: #ffffff; */
+        border-radius: .25rem
+    }
+
+    .CartContainer {
+        width: 70%;
+        height: 90%;
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0px 10px 20px #1687d933;
+    }
+
+    .Cart-Items {
+        margin: auto;
+        width: 90%;
+        height: 30%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .about {
+        height: 100%;
+        width: 24%;
+    }
+
+    .title {
+        line-height: 28px;
+        font-size: 30px;
+        font-family: 'Open Sans';
+        font-weight: 700;
+        color: #202020;
+    }
+
+    .subtitle {
+        line-height: 10px;
+        font-size: 18px;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        color: #909090;
+    }
+
+    .counter {
+        width: 15%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .remove-but {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #d9d9d9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-family: 'Open Sans';
+        font-weight: 900;
+        color: #202020;
+        cursor: pointer;
+    }
+
+    .count {
+        font-size: 20px;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        color: #202020;
+    }
+
+    .prices {
+        height: 100%;
+        text-align: right;
+    }
+
+    .amount {
+        padding-top: 20px;
+        font-size: 26px;
+        font-family: 'Open Sans';
+        font-weight: 800;
+        color: #202020;
+    }
+
+    .save {
+        padding-top: 5px;
+        font-size: 14px;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        color: #1687d9;
+        cursor: pointer;
+    }
+
+    .remove {
+        padding-top: 5px;
+        font-size: 14px;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        color: #E44C4C;
+        cursor: pointer;
+    }
+
+    .pad {
+        margin-top: 5px;
+    }
+
+    hr {
+        width: 66%;
+        float: right;
+        margin-right: 5%;
+    }
+
+    .checkout {
+        float: right;
+        margin-right: 5%;
+        width: 28%;
+    }
+
+    .total {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* .Subtotal {
+        font-size: 22px;
+        font-family: 'Open Sans';
+        font-weight: 700;
+        color: #202020;
+    } */
+
+    .items {
+        font-size: 15px;
+        font-family: 'Open Sans';
+        font-weight: 500;
+        color: #909090;
+        line-height: 10px;
+    }
+
+    .total-amount {
+        font-size: 34px;
+        font-family: 'Open Sans';
+        font-weight: 900;
+        color: #202020;
+    }
+
+    .button {
+        margin-top: 10px;
+        width: 100%;
+        height: 40px;
+        border: none;
+        background: linear-gradient(to bottom right, #B8D7FF, #8EB7EB);
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 15px;
+        font-family: 'Open Sans';
+        font-weight: 600;
+        color: #202020;
+    }
+</style>
+<script>
+    function decrement(myid) {
+        txtqty = document.getElementById(myid);
+        if (txtqty.value > 1) {
+            txtqty.value = parseInt(txtqty.value) - 1;
+        }
+    }
+    function increment(myid) {
+        txtqty = document.getElementById(myid);
+        if (txtqty.value < 10) {
+            txtqty.value = parseInt(txtqty.value) + 1;
+        }
+    }
+
+    function Remove(myid) {
+        Result = confirm("Are you sure you want to delete this book?");
+        if (Result) {
+            myform = document.getElementById(myid);
+            // myform.action = "/removeItem"
+            myform.submit();
+        }
+    }
+</script>
+
+<body>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-1 order-lg-2 order-1"></div>
+            <div class="col-lg-10 order-2">
+                <div class="Container">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">Cart details</li>
+                        </ol>
+                    </nav>
+                    <br><br>
+                    {% if items.count < 1 %}
+                        <div>
+                            <center><h1>Cart is empty.. <img width="90px" height="85px" src="../static/Empty Cart.jpg"></h1></center>
+                        </div>
+                    {%endif%}
+                    {%for item in items%}
+                    <form method="post" id="myform{{item.book.id}}">
+                        {%csrf_token%}
+                        <div class="Cart-Items">
+                            <div class="image-box">
+                                <img src="{{item.book.image.url}}" style="width: 100px;" />
+                            </div>
+                            <div class="about">
+                                <h1 class="title">{{item.book.p_short_name}}</h1>
+                                <input type="hidden" name="bookid" value="{{item.book.id}}" />
+                            </div>
+                            <div class="counter">
+                                <button type="submit" class="btn btn-light remove-but" onclick="decrement('qty{{item.book.id}}')"
+                                    style="border-radius:12px;">-</button>
+                                <input type="text" value="{{item.qty}}" name="qty" id="qty{{item.book.id}}" size="1"
+                                    style="text-align:center;">
+                                <button type="submit" class="btn btn-light remove-but" onclick="increment('qty{{item.book.id}}')"
+                                    style="border-radius:12px;">+</button>
+                            </div>
+                            <div class="prices">
+                                <div class="amount">₹ {% widthratio item.qty 1 item.book.price %}</div>
+                                <div class="save"><u>Book Price: ₹ {{item.book.price}}</u></div>
+                            </div>
+                            <div class="Subtotal">
+                                <button class="btn btn-denger remove-but" type="button" name="action" value="remove" onclick="Remove('myform{{item.book.id}}')">Remove</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    {%endfor%}
+                    <hr>
+                    <div class="checkout">
+                        {% if request.session.total > 249 %}
+                            <div class="save">Delivery Charges: <span style="color: green;">Free</span></div>
+                        {%else%}
+                            <div class="save Tooltip" data-placement="top" title="Total is Below ₹249"><u>Delivery Charges: ₹ 40</u></div>
+                        {%endif%}
+                        <div class="total">
+                            <div class="total-amount">&nbsp;&nbsp;Total: ₹ {{request.session.total}}</div>                           
+                        </div>
+                        <a href="/MakePayment" class="btn button">Checkout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 order-lg-2 order-3"></div>
+        </div>
+    </div>
+    <br>
+</body>
+{%endblock%}

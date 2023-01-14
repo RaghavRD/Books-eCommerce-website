@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- J Query -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- icons link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <title>mybooks.com - Buy your favorite books from just @99</title>
+    <link rel="icon" href="../static/WP - icon.jpg" />
+    <style>
+        .social-LR-margin {
+            margin-left: 5px auto;
+            margin-right: 5px auto;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: arial;
+        }
+
+        .price {
+            color: grey;
+            font-size: 22px;
+        }
+
+        .card button {
+            border: none;
+            outline: 0;
+            padding: 12px;
+            color: black;
+            background-color: rgb(187, 187, 187);
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .card button:hover {
+            color: white;
+            background-color: rgb(44, 43, 43);
+        }
+
+        .filter-col {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
+    <script>
+        //     var availableTags = [
+        //   "ActionScript",
+        //   "AppleScript",
+        //   "Asp",
+        //   "BASIC",
+        //   "C",
+        //   "C++",
+        // ];
+        // $( "#searchProduct" ).autocomplete({
+        //   source: availableTags
+        // });
+
+        // setTimer(function () {
+        //     if ($('#myalert').length > 0)
+        //     {
+        //         ($('#myalert').remove()
+        //     ), 5000);
+
+        // for getting the sorting status to be displayed in sorting dropdown placeholder
+        function get(name) {
+            if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))  //location.search give query sling part
+                return decodeURIComponent(name[1]);
+        }
+
+        if (get('ordering'))
+            document.getElementById('placeholder').innerHTML = "Sort: " + document.getElementById(get('ordering')).innerHTML;
+
+        if (get('price'))
+            document.getElementById('price-placeholder').innerHTML = "Price: " + document.getElementById('pr' + get('price')).innerHTML;
+
+        // for getting url after applying ordering
+        function finalurl() {
+            var url = new URL(window.location.href);
+            var search_params = url.searchParams;
+            search_params.set('ordering', document.getElementById("sort-list").value);
+            url.search = search_params.toString();
+            var new_url = url.toString();
+            return new_url
+        }
+
+        // for getting url after applying price filtering
+        function finalurl2() {
+            var url = new URL(window.location.href);
+            var search_params = url.searchParams;
+            search_params.set('price', document.getElementById("price-list").value);
+            url.search = search_params.toString();
+            var new_url = url.toString();
+            return new_url
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light col-12">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img src="../static/Navbar logo.png" width="135px"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Category
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            {%for cat in cats%}
+                            <li><a class="dropdown-item" href="/ShowBooks/{{cat.id}}">{{cat.Category_name}}</a></li>
+                            {%endfor%}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aboutus">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class=" navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                            aria-expanded="false" aria-label="Toggle navigation">Apply Filter</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <a class="btn ms-3 btn-outline-success dropdown-toggle" id="navbarDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false" role="button">
+                        <img src="../static/login-removebg.png" width="18px"></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        {%if "uname" in request.session%}
+                        <li><a class="dropdown-item" href="/userProfile" style="text-decoration: none;"> <span
+                                    class="fa fa-user"></span> Profile</a></li>
+                        <li><a class="dropdown-item" href="/ShowAllCartItems" style="text-decoration: none;"> <span
+                                    class="fa fa-shopping-cart"></span> Cart</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/signout" style="text-decoration: none;"> <span
+                                    class="fa fa-sign-out"></span> Sign Out</a></li>
+                        {%else%}
+                        <li><a class="dropdown-item" href="/signin" style="text-decoration: none;"> <span
+                                    class="fa fa-sign-in"></span> Sign in</a></li>
+                        {%endif%}
+                    </ul>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Filter -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <select class="form-select" aria-label="Default select example" name="sort" id="sort-list"
+                            onchange="location=finalurl();" style="margin-left: auto;">
+                            <option value="" id="placeholder" disabled selected hidden>Sort</option>
+                            <option id="price" value="price">Price: Low To High</option>
+                            <option id="-price" value="-price">Price: High To Low</option>
+                            <option id="-date_added" value="-date_added">Price: What's New</option>
+                        </select>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <select class="form-select" aria-label="Default select example" name="price" id="price-list"
+                            onchange="location=finalurl2();" style="margin-left:100px;">
+                            <option value="" id="placeholder" disabled selected hidden>Price</option>
+                            <option id="pr199" value="199">Below 199</option>
+                            <option id="pr299" value="299">Below 299</option>
+                            <option id="pr499" value="499">Below 499</option>
+                        </select>
+                    </li>
+                </ul>
+                <form method="get" action="/search">
+                    <div class="input-group">
+                        <input class="form-control me-2" type="search" name="query" id="query"
+                            placeholder="Search books" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit"><img src="../static/search.png"
+                                width="18px"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <form method="get" action="/search">
+                <div class="input-group">
+                    <input class="form-control me-2" type="search" name="query" id="query" placeholder="Search books"
+                        aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit"><img src="../static/search.png"
+                            width="18px"></button>
+                </div>
+            </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                aria-expanded="false" aria-label="Toggle navigation"><span>Filter</span>
+            </button>
+            <div class="collapse" id="navbarToggleExternalContent">
+                <div class="bg-light p-4">
+                    <h5 class="text-dark h4">Collapsed content</h5>
+                    <span class="text-muted">Toggleable via the navbar brand.</span>
+                </div>
+            </div>
+        </div>
+    </nav> -->
+
+    {%block content%}
+
+    <!-- Alert -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success d-flex align-items-center alert-dismissible fade show">
+        <a href="#" class="close" data-dismiss="alert" id="myalert" aria-label="close">&times;</a>
+        <strong>{{ message }}</strong>
+    </div>
+    {%endfor%}
+    {%endif%}
+
+    <!-- Delivary image -->
+    <section><img src="../static/D Image.jpg" width="100%" alt="Loading.."></section>
+
+    <!-- Carousel -->
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <center><img src="../static/back1.jpg" class="d-block" style="width: 97%;" alt="..."></center>
+            </div>
+            <div class="carousel-item">
+                <center><img src="../static/back2.jpg" class="d-block" style="width: 97%;" alt="..."></center>
+            </div>
+            <div class="carousel-item">
+                <center><img src="../static/back3.jpg" class="d-block" style="width: 97%;" alt="..."></center>
+            </div>
+            <div class="carousel-item">
+                <center><img src="../static/back4.jpg" class="d-block" style="width: 97%;" alt="..."></center>
+            </div>
+            <div class="carousel-item">
+                <center><img src="../static/back5.jpg" class="d-block" style="width: 97%;" alt="..."></center>
+            </div>
+            <div class="carousel-item">
+                <center><img src="../static/back6.jpg" class="d-block" style="width: 97%;" alt="..."></center>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <br>
+
+    <!-- Book card -->
+    <div class="container">
+        <div class="row">
+            {%for book in ServiceData%}
+            <div class="card mar-LR  col-xs-12 col-sm-6 col-md-4">
+                <center>
+                    <a href="/ViewDetails/{{book.id}}"><img src="{{book.image.url}}" class="img-responsive"
+                            alt="Loading.." style="width:200px; height: 300px;"></a>
+                    <h4>{{book.p_short_name}}</h4>
+                    <p class="price">₹ {{book.price}}</p>
+                </center>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+    <br>
+
+    <!-- Paginator -->
+    <nav>
+        <ul class="pagination pagination-circle justify-content-center">
+            {% if ServiceData.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="/?page=1">First</a>
+            </li>
+            {% endif %}
+
+            {% for n in books %}
+            {% if n == ServiceData.number %}
+            <li class="page-item active"><a class="page-link" href="/?page={{n}}">{{n}}</a></li>
+            {%else%}
+            <li class="page-item"><a class="page-link" href="/?page={{n}}">{{n}}</a></li>
+            {%endif%}
+            {%endfor%}
+
+            {% if ServiceData.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="/?page={{lastpage}}">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {%endblock%}
+
+    <!-- Footer -->
+    <section class="footers bg-light pt-5 pb-3">
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4 footers-one">
+                    <div class="footers-logo">
+                        <img src="../static/Navbar logo.png" alt="Loading.." style="width:200px;">
+                    </div>
+                    <div class="footers-info mt-3">
+                        <p>My favourite books (Book Sellers) Pvt. Ltd. 100 A, G. D. Mangulkar Road, New Pune - 123 456
+                        </p>
+                    </div>
+                    <div class="social-icons social-LR-margin">
+                        <a href="https://www.facebook.com/"><i id="social-fb"
+                                class="fa fa-facebook-square fa-2x social"></i></a>
+                        <a href="https://twitter.com/"><i id="social-tw"
+                                class="fa fa-twitter-square fa-2x social"></i></a>
+                        <a href="https://www.youtube.com/"><i id="social-gp" class="fa fa-youtube fa-2x social"></i></a>
+                        <a href="mailto:raghavdesai774@gmail.com"><i id="social-em"
+                                class="fa fa-envelope-square fa-2x social"></i></a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2 footers-two text-center">
+                    <h5>Affiliate</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="text-muted text-decoration-none" href="/aboutTheProg">About Programme</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/t&c">Terms & Conditions</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/contactUs">Contact Us</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/payments">Payments</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2 footers-three text-center">
+                    <h5>get help</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="text-muted text-decoration-none" href="/faq">FAQ</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/returns">returns</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/shipping">shipping</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/payments">payment options</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2 footers-four text-center">
+                    <h5>Company</h5>
+                    <ul class="list-unstyled">
+                        <li><a class="text-muted text-decoration-none" href="/careers">Career</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/aboutus">about us</a></li>
+                        <li><a class="text-muted text-decoration-none" href="#">our services</a></li>
+                        <li><a class="text-muted text-decoration-none" href="/privacypolicy">privacy policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="disclaimer bg-light border">
+        <div class="container">
+            <div class="row ">
+                <div class="col-md-12 py-2">
+                    <small>
+                        Disclaimer: The information provided by My favourite books ("we" "us," or "our") on mybooks.com
+                        (the "Site") is for general informational purposes only. All information on the Site is fake,
+                        however we make no representation or warranty of any kind, express or implied, regarding the
+                        accuracy, adequacy, validity, reliability, availability, or completeness of any information on
+                        the Site, UNDER NO CIRCUMSTANCE SHALL WE HAVE ANY LIABILITY TO YOU FOR ANY LOSS OR DAMAGE OF ANY
+                        KIND INCURRED AS A RESULT OF THE USE OF THE SITE OR RELIANCE ON ANY INFORMATION PROVIDED ON THE
+                        SITE. YOUR USE OF THE SITE AND YOUR RELIANCE ON ANY INFORMATION ON THE SITE IS SOLELY AT YOUR
+                        OWN RISK.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="copyright border">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-12 pt-3">
+                    <p class="text-muted">Copyright © 2023 MyFevoriteBooks Pvt. Ltd. | Designed by: Raghav Desai</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+{%extends "index.html"%}
+
+
+{%block content%}
+
+<body>
+    <br>
+    <div class="container">
+        <h5><i>Search results:</i></h5>
+        {% if allProd|length < 1 %}
+        <p>No search results</p>
+        Your search query: <b>{{query}} </b>did not match any books. <br>
+        Suggestions:
+        <ul><li>Try different keywords.</li></ul>
+        {%endif%}
+        
+        <div class="row">
+            {%for books in allProd%}
+            <div class="card mar-LR col-sm-3">
+                <center>
+                    <a href="/ViewDetails/{{books.id}}"><img src="{{books.image.url}}" class="img-responsive"
+                            alt="Loading.." style="width:200px; height: 300px;"></a>
+                    <h4>{{books.p_short_name}}</h4>
+                    <p class="price">₹ {{books.price}}</p>
+                    <!-- <p><button><a href="/addToCart"></a> Add to <i class="fa fa-shopping-cart"></i></button></p> -->
+                </center>
+            </div>
+            <br>
+            {%endfor%}
+        </div>
+    </div>
+    <br>
+</body>
+{%endblock%}

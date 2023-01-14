@@ -1,0 +1,177 @@
+{%extends "index.html"%}
+
+{%block content%}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+        text-shadow: rgba(0, 0, 0, .01) 0 0 1px
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: ">"
+    }
+
+    .breadcrumb {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: .1rem 0rem !important;
+        margin-bottom: 0rem;
+        list-style: none;
+        background-color: #ffffff;
+        border-radius: .25rem
+    }
+
+    .product_name {
+        font-size: 20px;
+        font-weight: 400;
+        margin-top: 0px
+    }
+
+    .product_description {
+        padding-left: 0px
+    }
+
+    .image_selected {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: calc(100% + 15px);
+        height: 525px;
+        -webkit-transform: translateX(-15px);
+        -moz-transform: translateX(-15px);
+        -ms-transform: translateX(-15px);
+        -o-transform: translateX(-15px);
+        transform: translateX(-15px);
+        border: solid 1px #e8e8e8;
+        box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 15px
+    }
+
+    .padding-2 {
+        margin-right: 5px;
+        margin-left: 5px
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    li {
+        font-size: 16px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-1 order-lg-2 order-1"></div>
+            <div class="col-lg-10 order-2">
+                <div class="product_description">
+                    <br>
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">payments</li>
+                        </ol>
+                    </nav><br>
+                    <div class="product_name">
+                        <h4><i><b>payments</b></i></h4>
+                        <p><i>
+                                <h5>Credit Card Payments:</h5>
+                            </i></p>
+                        <p>We accept all VISA and MasterCard, both Indian and International.
+                            Click on the "BUY" button and select "Pay By Credit Card" on the following page.
+                            To use American Express Cards please choose the "Pay by Net banking" option.</p>
+                        <hr class="singleline">
+                        <p><i>
+                                <h5>Debit Cards:</h5>
+                            </i></p>
+                        <p>
+                        <ul>We accept Debit Cards issued by the following banks:
+                            <li>AXIS Bank (VISA Electron only)</li>
+                            <li>Barclays Bank (VISA Electron only)</li>
+                            <li>Canara Bank</li>
+                            <li>Citibank</li>
+                            <li>Corporation Bank (VISA Electron only)</li>
+                            <li>Cosmos Bank Visa (VISA Electron only)</li>
+                            <li>Deutsche Bank (VISA Electron only)</li>
+                            <li>HDFC Bank (VISA Electron only)</li>
+                            <li>ICICI Bank</li>
+                            <li>Indian Overseas Bank (VISA Electron only)</li>
+                            <li>ING Vyasa Bank (VISA Electron only)</li>
+                            <li>Karur Vysya Bank (VISA Electron only)</li>
+                            <li>Kotak Mahindra Bank Virtual Card (VISA Electron only)</li>
+                            <li>Punjab National Bank</li>
+                            <li>Standard Chartered Bank Visa (VISA Electron only)</li>
+                            <li>State Bank of India</li>
+                            <li>Union Bank of India</li>
+                        </ul>
+                        </p>
+                        <hr class="singleline">
+                        <p><i>
+                                <h5>Internet Banking:</h5>
+                            </i></p>
+                        <ul>We accept payment through Internet Banking for the following banks:
+                            <li>ABN AMRO Bank</li>
+                            <li>AXIS Bank</li>
+                            <li>Bank of Baroda Corporate Accounts</li>
+                            <li>Bank of Baroda Retail Accounts</li>
+                            <li>Bank Of India</li>
+                            <li>Bank Of Maharashtra</li>
+                            <li>Bank Of Rajasthan</li>
+                            <li>Citibank Bank Account Online</li>
+                            <li>City Union Bank</li>
+                            <li>Corporation Bank</li>
+                            <li>Deutsche Bank</li>
+                            <li>Federal Bank</li>
+                            <li>HDFC Direct Pay</li>
+                            <li>ICICI Bank</li>
+                            <li>IDBI Bank</li>
+                            <li>IndusInd Bank</li>
+                            <li>Jammu & Kashmir Bank</li>
+                            <li>Karnataka Bank</li>
+                            <li>Karur Vysya Bank</li>
+                            <li>Kotak Mahindra Bank</li>
+                            <li>Lakshmi Vilas Bank NetBanking</li>
+                            <li>Oriental Bank Of Commerce</li>
+                            <li>Punjab National Bank Corporate Accounts</li>
+                            <li>Punjab National Bank Retail Accounts</li>
+                            <li>South Indian Bank</li>
+                            <li>State Bank Of India</li>
+                            <li>State Bank of Indore</li>
+                            <li>State Bank of Travancore</li>
+                            <li>Syndicate Bank</li>
+                            <li>Union Bank Of India</li>
+                            <li>Vijaya Bank</li>
+                            <li>YES BANK</li>
+                        </ul>
+                        <hr class="singleline">
+                        <p><i>
+                                <h5>Payment by Cash on Delivery (COD) Order in India:</h5>
+                            </i></p>
+                        <i>
+                            <h5>What is Cash On Delivery?</h5>
+                        </i>
+                        <p>Cash On Delivery (COD) is a payment option offered to you wherein you order the Book(s) on
+                            MyBooks and pay at your doorstep on delivery. The Cash will be collected by our
+                            Representative Courier partner delivering the Book(s).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1 order-lg-2 order-3"></div>
+        </div>
+    </div>
+</body>
+{%endblock%}

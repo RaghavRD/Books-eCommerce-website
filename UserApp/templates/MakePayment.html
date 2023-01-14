@@ -1,0 +1,84 @@
+{%extends "index.html"%}
+
+{%block content%}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
+        text-shadow: rgba(0, 0, 0, .01) 0 0 1px
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: ">"
+    }
+
+    .breadcrumb {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: .1rem 0rem !important;
+        margin-bottom: 0rem;
+        list-style: none;
+        border-radius: .25rem
+    }
+
+    .product_description {
+        padding-left: 0px
+    }
+</style>
+<body>
+    <br>
+    <div class="container">
+        <div class="row"> 
+            <div class="col-lg-1 order-lg-2 order-1"></div>
+            <div class="col-lg-10 order-2">
+                <div class="product_description">
+                    <nav>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/ShowAllCartItems">Back to Cart</a></li>
+                            <li class="breadcrumb-item active">Payment</li>
+                        </ol>
+                    </nav><br>
+                    <form method="post">
+                        {%csrf_token%}
+                        <table class="table">
+                            <tr>
+                                <td>Enter Card No.</td>
+                                <td><input type="text" name="cardno" placeholder="4444 3333 2222 1111"
+                                        class="form-control" required /></td>
+                            </tr>
+                            <tr>
+                                <td>Enter CVV</td>
+                                <td><input type="text" name="cvv" class="form-control" placeholder="321" required />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Enter Expiry</td>
+                                <td><input type="text" name="expiry" class="form-control" required
+                                        placeholder="10/2025" /></td>
+                            </tr>
+
+                            <tr>
+                                <td>Total Amout</td>
+                                <td>{{request.session.total}}</td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td><button type="submit" class="btn btn-success">Make Payment</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-1 order-lg-2 order-3"></div>
+        </div>
+    </div>
+    <br>
+</body>
+{%endblock%}
