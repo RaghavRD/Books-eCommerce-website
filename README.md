@@ -35,7 +35,7 @@ Welcome to MyBooks! This project is an eCommerce website for buying books online
 - Clone the repository: `git clone https://github.com/your-username/mybooks.git`
 - Install the necessary dependencies: `npm install`
 - Configure the database connection and other environment variables.
-- Start the development server: `npm start`
+- Start the development server: `python manage.py runserver`
 - Access the website in your browser at `http://localhost:5000`
 
 
